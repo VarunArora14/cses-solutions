@@ -98,7 +98,8 @@ int solve(int row, int col, int steps)
 int main()
 {
   // We have to travel the whole grid as input is 48 length string implying we travel all nodes and can't leavy any
-  string str = "??????R??????U??????????????????????????LD????D?";
+  string str;
+  cin >> str;
 
   for (int i = 0; i < str.length(); i++)
   {
@@ -124,7 +125,7 @@ int main()
 
   vis[1][1] = true; // starting point
   int ans = solve(1, 1, 0);
-  cout << "ans: " << ans;
+  cout << ans;
   return 0;
 }
 
