@@ -37,46 +37,43 @@ const int max_n = 1000000;
 
 int maxval = INT_MIN, minval = INT_MAX;
 
+void floodfill(vvi &vis, vector<vector<char>> &grid, int row, int col)
+{
+  if (row < 0 || col < 0 || row >= grid.size() || col >= grid[0].size() || grid[row][col] == '#' || vis[row][col] == true)
+    return;
+
+  vis[row][col] = true;
+  floodfill(vis, grid, row - 1, col);
+  floodfill(vis, grid, row + 1, col);
+  floodfill(vis, grid, row, col - 1);
+  floodfill(vis, grid, row, col + 1);
+}
+
 int main()
 {
-  ll k;
   int n, m;
-  cin >> n >> m >> k;
-  vll desired_apartments(n), free_apartments(m);
+  cin >> n >> m;
+  vector<vector<char>> grid(n, vector<char>(m));
   for (int i = 0; i < n; i++)
   {
-    cin >> desired_apartments[i];
+    for (int j = 0; j < m; j++)
+    {
+      cin >> grid[i][j];
+    }
   }
-  for (int j = 0; j < m; j++)
-  {
 
-    cin >> free_apartments[j];
-  }
   int ans = 0;
-  sort(free_apartments.begin(), free_apartments.end());       // nlogn
-  sort(desired_apartments.begin(), desired_apartments.end()); // mlogm
-
-  int i = 0, j = 0;
-  while (i < n && j < m)
+  vvi vis(n, vi(m));
+  for (int i = 0; i < n; i++)
   {
-    if (abs(desired_apartments[i] - free_apartments[j]) <= k)
+    for (int j = 0; j < m; j++)
     {
-      // print2(desired_apartments[i], free_apartments[j]);
-      ans++;
-      i++;
-      j++;
-    }
-    else
-    {
-      if (desired_apartments[i] - free_apartments[j] > k)
+      if (grid[i][j] == '.' && vis[i][j] == false)
       {
-        j++; // desired too big, check next free apartment
+        floodfill(vis, grid, i, j);
+        ans++;
       }
-      else
-        i++; // free too big this time
     }
-
-    // print2(i, j);
   }
   cout << ans;
   return 0;
